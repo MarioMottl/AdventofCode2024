@@ -20,8 +20,10 @@ fn evaluate_expression(numbers: &[u64], operators: &[char]) -> u64 {
             '+' => result += numbers[i + 1],
             '*' => result *= numbers[i + 1],
             '|' => {
-                result =
-                    result * 10u64.pow(numbers[i + 1].to_string().len() as u32) + numbers[i + 1];
+                let concatenated = format!("{}{}", result, numbers[i + 1]);
+                result = concatenated
+                    .parse::<u64>()
+                    .expect("Failed to parse concatenated number");
             }
             _ => panic!("Unknown operator"),
         }
