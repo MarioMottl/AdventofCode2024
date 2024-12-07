@@ -69,3 +69,5 @@ path = "src/bin/part1.rs"
 name = "part2"
 path = "src/bin/part2.rs"
 EOF
+
+aoc d -y $YEAR -d $DAY_NUMBER
