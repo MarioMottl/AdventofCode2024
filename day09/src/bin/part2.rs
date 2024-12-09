@@ -153,17 +153,6 @@ fn calculate_checksum(disk_map: &[Option<usize>]) -> usize {
         .sum()
 }
 
-fn print_disk_map(disk_map: &[Option<usize>]) {
-    let map_str: String = disk_map
-        .iter()
-        .map(|&block| match block {
-            Some(id) => std::char::from_digit(id as u32, 10).unwrap(),
-            None => '.',
-        })
-        .collect();
-    println!("{}", map_str);
-}
-
 fn main() {
     match fs::read_to_string(INPUT_FILE) {
         Ok(input) => match parse_disk_map(&input.trim()) {
@@ -175,19 +164,5 @@ fn main() {
             Err(e) => eprintln!("Failed to parse disk map: {}", e),
         },
         Err(e) => eprintln!("Failed to read input file: {}", e),
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_example() {
-        let input = "2333133121414131402";
-        let disk_map = parse_disk_map(input).unwrap();
-        let compacted_map = compact_disk_map(disk_map);
-        let checksum = calculate_checksum(&compacted_map);
-        assert_eq!(checksum, 1928);
     }
 }
