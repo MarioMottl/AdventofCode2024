@@ -21,7 +21,10 @@ const INPUT_FILE: &str = "input.txt";
 const EXAMPLE_FILE: &str = "example.txt";
 
 fn parse_input(input: &str) -> Vec<Vec<u32>> {
-    input.lines().map(|line| line.chars().map(|c| c.to_digit(10).unwrap()).collect()).collect()
+    input
+        .lines()
+        .map(|line| line.chars().map(|c| c.to_digit(10).unwrap()).collect())
+        .collect()
 }
 
 fn find_trailheads(grid: &[Vec<u32>]) -> Vec<(usize, usize)> {
@@ -36,7 +39,12 @@ fn find_trailheads(grid: &[Vec<u32>]) -> Vec<(usize, usize)> {
     trailheads
 }
 
-fn dfs(grid: &[Vec<u32>], position: (usize, usize), visited: &mut HashSet<(usize, usize)>, current_height: u32) -> u32 {
+fn dfs(
+    grid: &[Vec<u32>],
+    position: (usize, usize),
+    visited: &mut HashSet<(usize, usize)>,
+    current_height: u32,
+) -> u32 {
     let (x, y) = position;
     if grid[x][y] == 9 {
         return 1;
@@ -48,7 +56,8 @@ fn dfs(grid: &[Vec<u32>], position: (usize, usize), visited: &mut HashSet<(usize
     for &(dx, dy) in &directions {
         let new_x = x as isize + dx;
         let new_y = y as isize + dy;
-        if new_x >= 0 && new_x < grid.len() as isize && new_y >= 0 && new_y < grid[0].len() as isize {
+        if new_x >= 0 && new_x < grid.len() as isize && new_y >= 0 && new_y < grid[0].len() as isize
+        {
             let new_pos = (new_x as usize, new_y as usize);
             if !visited.contains(&new_pos) && grid[new_pos.0][new_pos.1] == current_height + 1 {
                 trail_count += dfs(grid, new_pos, visited, current_height + 1);
@@ -84,7 +93,10 @@ fn main() {
     let start_calculate = Instant::now();
     let total_score = calculate_trailhead_ratings(&grid);
     let duration_calculate = start_calculate.elapsed();
-    println!("Time taken to calculate trailhead ratings: {:?}", duration_calculate);
+    println!(
+        "Time taken to calculate trailhead ratings: {:?}",
+        duration_calculate
+    );
 
     println!("Total Score: {}", total_score);
 }
