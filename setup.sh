@@ -8,6 +8,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 DAY=$1
+# shellcheck disable=SC2046
 DAY_NUMBER=$(printf "%02d" $(echo "$DAY" | sed 's/^day0*//'))
 DAY="day$DAY_NUMBER"
 
@@ -37,7 +38,10 @@ pub fn read_input(file_path: &str) -> Result<String> {
     Ok(contents)
 }
 
+#[allow(dead_code)]
 const INPUT_FILE: &str = "input.txt";
+#[allow(dead_code)]
+const EXAMPLE_FILE: &str = "example.txt";
 
 fn main() {
     #[allow(unused_variables)]
