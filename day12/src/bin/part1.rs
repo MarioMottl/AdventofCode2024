@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::collections::HashSet;
 use std::fs::File;
 use std::io::Read;
+use std::time::Instant;
 
 /*
 https://adventofcode.com/2024/day/12
@@ -86,6 +87,11 @@ fn main() {
         .lines()
         .map(|line| line.chars().collect())
         .collect();
+
+    let start = Instant::now();
     let total_price = calculate_fence_price(&map);
+    let duration = start.elapsed();
+
     println!("Total price: {}", total_price);
+    println!("Time taken: {:?}", duration);
 }
