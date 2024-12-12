@@ -96,3 +96,137 @@ In the provided Rust code, both BFS and DFS are used to explore regions in a 2D 
 - It ensures that each side is counted only once by marking perimeter cells as seen.
 
 By using BFS in both functions, the code ensures that all cells in a region and all perimeter cells are explored efficiently.
+
+## Example Usage
+
+### Flood Fill Using BFS
+
+**Breadth-First Search (BFS) Approach:**
+- BFS explores the graph level by level.
+- It uses a queue (FIFO) to keep track of the nodes to be explored next.
+- BFS is useful when you want to explore all nodes at the present depth level before moving on to nodes at the next depth level.
+
+**Example Implementation of Flood Fill Using BFS:**
+
+```rust
+use std::collections::VecDeque;
+
+fn flood_fill_bfs(grid: &mut Vec<Vec<i32>>, start_row: usize, start_col: usize, new_value: i32) {
+    let initial_value = grid[start_row][start_col];
+    if initial_value == new_value {
+        return;
+    }
+
+    let directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+    let mut queue = VecDeque::new();
+    queue.push_back((start_row, start_col));
+
+    while let Some((row, col)) = queue.pop_front() {
+        if row >= grid.len() || col >= grid[0].len() || grid[row][col] != initial_value {
+            continue;
+        }
+
+        grid[row][col] = new_value;
+
+        for &(dr, dc) in &directions {
+            let new_row = row.wrapping_add(dr as usize);
+            let new_col = col.wrapping_add(dc as usize);
+            if new_row < grid.len() && new_col < grid[0].len() {
+                queue.push_back((new_row, new_col));
+            }
+        }
+    }
+}
+
+fn main() {
+    let mut grid = vec![
+        vec![1, 1, 1, 2],
+        vec![1, 1, 0, 2],
+        vec![1, 0, 0, 2],
+        vec![2, 2, 2, 2],
+    ];
+
+    let start_row = 0;
+    let start_col = 0;
+    let new_value = 3;
+
+    flood_fill_bfs(&mut grid, start_row, start_col, new_value);
+
+    for row in &grid {
+        println!("{:?}", row);
+    }
+}
+```
+
+### Flood Fill Using DFS
+
+**Depth-First Search (DFS) Approach:**
+- DFS explores the graph by going as deep as possible along each branch before backtracking.
+- It uses a stack (LIFO) to keep track of the nodes to be explored next. This can be implemented using recursion (implicit stack) or an explicit stack.
+- DFS is useful when you want to explore as far down a branch as possible before backtracking.
+
+**Example Implementation of Flood Fill Using DFS:**
+
+```rust
+fn flood_fill_dfs(grid: &mut Vec<Vec<i32>>, row: usize, col: usize, new_value: i32) {
+    let initial_value = grid[row][col];
+    if initial_value == new_value {
+        return;
+    }
+    fill(grid, row, col, initial_value, new_value);
+}
+
+fn fill(grid: &mut Vec<Vec<i32>>, row: usize, col: usize, initial_value: i32, new_value: i32) {
+    if row >= grid.len() || col >= grid[0].len() || grid[row][col] != initial_value {
+        return;
+    }
+
+    grid[row][col] = new_value;
+
+    if row > 0 {
+        fill(grid, row - 1, col, initial_value, new_value); // Up
+    }
+    if row < grid.len() - 1 {
+        fill(grid, row + 1, col, initial_value, new_value); // Down
+    }
+    if col > 0 {
+        fill(grid, row, col - 1, initial_value, new_value); // Left
+    }
+    if col < grid[0].len() - 1 {
+        fill(grid, row, col + 1, initial_value, new_value); // Right
+    }
+}
+
+fn main() {
+    let mut grid = vec![
+        vec![1, 1, 1, 2],
+        vec![1, 1, 0, 2],
+        vec![1, 0, 0, 2],
+        vec![2, 2, 2, 2],
+    ];
+
+    let start_row = 0;
+    let start_col = 0;
+    let new_value = 3;
+
+    flood_fill_dfs(&mut grid, start_row, start_col, new_value);
+
+    for row in &grid {
+        println!("{:?}", row);
+    }
+}
+```
+
+### Summary
+
+- **BFS Approach:**
+  - Uses a queue to explore nodes level by level.
+  - Suitable for finding the shortest path in unweighted graphs.
+  - Can consume more memory if the graph is wide.
+
+- **DFS Approach:**
+  - Uses a stack (or recursion) to explore nodes by going as deep as possible along each branch before backtracking.
+  - Suitable for exploring all possible paths in a graph.
+  - Can be more memory-efficient if the graph is wide but can consume more memory if the graph is deep.
+
+Both BFS and DFS can be used to implement the flood fill algorithm, and the choice between them depends on the specific requirements and constraints of the problem you are solving.
