@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.93"
+enum-iterator = "2.1.0"
 
 [[bin]]
 name = "part1"
