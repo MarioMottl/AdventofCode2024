@@ -72,4 +72,11 @@ path = "src/bin/part1.rs"
 [[bin]]
 name = "part2"
 path = "src/bin/part2.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
 EOF
