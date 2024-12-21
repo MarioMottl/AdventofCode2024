@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::collections::{HashMap, VecDeque};
 use std::fs::File;
 use std::io::Read;
+use std::time::Instant;
 
 #[allow(dead_code)]
 const INPUT_FILE: &str = "input.txt";
@@ -212,6 +213,7 @@ fn main() {
     let contents = read_input(INPUT_FILE).expect("Failed to read input");
     let mut sum = 0i64;
     let mut memo = HashMap::new();
+    let start_time = Instant::now();
 
     for line in contents.lines().filter(|l| !l.is_empty()) {
         let mut result = 0i64;
@@ -233,7 +235,9 @@ fn main() {
         }
 
         sum += result * code;
-        println!("{} {}", code, result);
-        println!("Sum: {}", sum);
     }
+
+    let duration = start_time.elapsed();
+    println!("Sum: {}", sum);
+    println!("Part2 took: {:?}", duration);
 }
