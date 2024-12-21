@@ -89,45 +89,54 @@ fn cheapest_dir_pad(curr_r: i32, curr_c: i32, dest_r: i32, dest_c: i32, nrobots:
             continue;
         }
 
-        if v.row < dest_r {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('v');
-            queue.push_back(Visit {
-                row: v.row + 1,
-                col: v.col,
-                presses: new_presses,
-            });
-        } else if v.row > dest_r {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('^');
-            queue.push_back(Visit {
-                row: v.row - 1,
-                col: v.col,
-                presses: new_presses,
-            });
+        match v.row.cmp(&dest_r) {
+            std::cmp::Ordering::Less => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('v');
+                queue.push_back(Visit {
+                    row: v.row + 1,
+                    col: v.col,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Greater => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('^');
+                queue.push_back(Visit {
+                    row: v.row - 1,
+                    col: v.col,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Equal => {}
         }
 
-        if v.col < dest_c {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('>');
-            queue.push_back(Visit {
-                row: v.row,
-                col: v.col + 1,
-                presses: new_presses,
-            });
-        } else if v.col > dest_c {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('<');
-            queue.push_back(Visit {
-                row: v.row,
-                col: v.col - 1,
-                presses: new_presses,
-            });
+        match v.col.cmp(&dest_c) {
+            std::cmp::Ordering::Less => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('>');
+                queue.push_back(Visit {
+                    row: v.row,
+                    col: v.col + 1,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Greater => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('<');
+                queue.push_back(Visit {
+                    row: v.row,
+                    col: v.col - 1,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Equal => {}
         }
     }
     memo.insert(h, answer);
     answer
 }
+
 
 fn cheapest(curr_r: i32, curr_c: i32, dest_r: i32, dest_c: i32, memo: &mut HashMap<u64, i64>, layers: i32) -> i64 {
     let mut answer = MAX_VALUE;
@@ -151,44 +160,53 @@ fn cheapest(curr_r: i32, curr_c: i32, dest_r: i32, dest_c: i32, memo: &mut HashM
             continue;
         }
 
-        if v.row < dest_r {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('v');
-            queue.push_back(Visit {
-                row: v.row + 1,
-                col: v.col,
-                presses: new_presses,
-            });
-        } else if v.row > dest_r {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('^');
-            queue.push_back(Visit {
-                row: v.row - 1,
-                col: v.col,
-                presses: new_presses,
-            });
+        match v.row.cmp(&dest_r) {
+            std::cmp::Ordering::Less => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('v');
+                queue.push_back(Visit {
+                    row: v.row + 1,
+                    col: v.col,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Greater => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('^');
+                queue.push_back(Visit {
+                    row: v.row - 1,
+                    col: v.col,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Equal => {}
         }
 
-        if v.col < dest_c {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('>');
-            queue.push_back(Visit {
-                row: v.row,
-                col: v.col + 1,
-                presses: new_presses,
-            });
-        } else if v.col > dest_c {
-            let mut new_presses = v.presses.clone();
-            new_presses.push('<');
-            queue.push_back(Visit {
-                row: v.row,
-                col: v.col - 1,
-                presses: new_presses,
-            });
+        match v.col.cmp(&dest_c) {
+            std::cmp::Ordering::Less => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('>');
+                queue.push_back(Visit {
+                    row: v.row,
+                    col: v.col + 1,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Greater => {
+                let mut new_presses = v.presses.clone();
+                new_presses.push('<');
+                queue.push_back(Visit {
+                    row: v.row,
+                    col: v.col - 1,
+                    presses: new_presses,
+                });
+            }
+            std::cmp::Ordering::Equal => {}
         }
     }
     answer
 }
+
 
 fn main() {
     let contents = read_input(INPUT_FILE).expect("Failed to read input");
