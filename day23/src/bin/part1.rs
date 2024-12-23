@@ -17,7 +17,7 @@ pub fn read_input(file_path: &str) -> Result<String> {
     Ok(contents)
 }
 
-fn find_connected_triples(input: &str) -> usize {
+fn parse_input(input: &str) -> HashMap<&str, HashSet<&str>> {
     let mut graph: HashMap<&str, HashSet<&str>> = HashMap::new();
 
     for line in input.lines() {
@@ -26,6 +26,11 @@ fn find_connected_triples(input: &str) -> usize {
         graph.entry(a).or_default().insert(b);
         graph.entry(b).or_default().insert(a);
     }
+    graph
+}
+
+fn find_connected_triples(input: &str) -> usize {
+    let graph = parse_input(input);
 
     let nodes: Vec<&str> = graph.keys().copied().collect();
     let mut t_triples = 0;
