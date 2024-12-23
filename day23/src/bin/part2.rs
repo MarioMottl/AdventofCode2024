@@ -2,6 +2,12 @@ use anyhow::Result;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
+use std::time::Instant;
+
+#[allow(dead_code)]
+const INPUT_FILE: &str = "input.txt";
+#[allow(dead_code)]
+const EXAMPLE_FILE: &str = "example.txt";
 
 pub fn read_input(file_path: &str) -> Result<String> {
     let mut file = File::open(file_path).expect("File not found");
@@ -54,14 +60,12 @@ fn find_largest_clique(input: &str) -> String {
     result_vec.join(",")
 }
 
-#[allow(dead_code)]
-const INPUT_FILE: &str = "input.txt";
-#[allow(dead_code)]
-const EXAMPLE_FILE: &str = "example.txt";
-
 fn main() {
     let contents: String = read_input(INPUT_FILE).unwrap_or_else(|err| panic!("{}", err));
 
+    let start_time = Instant::now();
     let password = find_largest_clique(&contents);
+    let duration = start_time.elapsed();
     println!("LAN party password: {}", password);
+    println!("Part2 took: {:?}", duration);
 }
