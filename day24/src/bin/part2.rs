@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::collections::HashSet;
 use std::fs::File;
 use std::io::Read;
+use std::time::Instant;
 
 pub fn read_input(file_path: &str) -> Result<String> {
     let mut file = File::open(file_path).expect("File not found");
@@ -136,8 +137,18 @@ impl Circuit {
 
 fn main() {
     let contents = read_input(INPUT_FILE).unwrap();
-    let circuit = Circuit::new(&contents);
 
+    let start = Instant::now();
+    let circuit = Circuit::new(&contents);
+    let circuit_creation_duration = start.elapsed();
+
+    let start = Instant::now();
     let swapped = circuit.find_swaps();
+    let find_swaps_duration = start.elapsed();
+
     println!("Swapped wires: {}", swapped.join(","));
+    println!("Durations:");
+    println!("  Circuit creation: {:?}", circuit_creation_duration);
+    println!("  Find swaps:       {:?}", find_swaps_duration);
+
 }

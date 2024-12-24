@@ -2,7 +2,7 @@ use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-
+use std::time::Instant;
 /*
 https://adventofcode.com/2024/day/24
 */
@@ -138,8 +138,17 @@ fn calculate_result(values: &HashMap<String, bool>) -> u64 {
 
 fn main() {
     let contents = read_input(INPUT_FILE).unwrap();
+    let start = Instant::now();
     let (initial_values, gates) = parse_input(&contents);
+    let parsing_duration = start.elapsed();
     let final_values = simulate_circuit(&initial_values, &gates);
+    let simulation_duration = start.elapsed() - parsing_duration;
     let result = calculate_result(&final_values);
+    let calculation_duration = start.elapsed() - simulation_duration;
+
     println!("Result: {}", result);
+    println!("Durations:");
+    println!("  Parsing:      {:?}", parsing_duration);
+    println!("  Simulation:   {:?}", simulation_duration);
+    println!("  Calculation:  {:?}", calculation_duration);
 }
