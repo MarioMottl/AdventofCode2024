@@ -1,6 +1,7 @@
 use anyhow::Result;
 use std::fs::File;
 use std::io::Read;
+use std::time::Instant;
 
 #[allow(dead_code)]
 const INPUT_FILE: &str = "input.txt";
@@ -62,29 +63,32 @@ fn can_fit(key: &Pattern, lock: &Pattern) -> bool {
 fn main() {
     let contents: String = read_input(INPUT_FILE).unwrap_or_else(|err| panic!("{}", err));
 
-    // Split input into patterns
+
+    let start = Instant::now();
     let patterns: Vec<Pattern> = contents
         .split("\n\n")
         .map(Pattern::from_str)
         .collect();
+    let parsing_duration = start.elapsed();
 
-    // Separate locks and keys
     let (keys, locks): (Vec<&Pattern>, Vec<&Pattern>) = patterns
         .iter()
         .partition(|p| p.is_lock);
 
-    println!("Keys: {:?}", keys);
-    println!("Locks: {:?}", locks);
-
+    let start = Instant::now();
     let mut valid_count = 0;
     for key in keys.iter() {
         for lock in locks.iter() {
             if can_fit(key, lock) {
                 valid_count += 1;
-                println!("Found valid pair: key {:?} lock {:?}", key.heights, lock.heights);
             }
         }
     }
+    let calculation_duration = start.elapsed();
 
     println!("Part 1: {}", valid_count);
+    println!("Durations:");
+    println!("  Parsing:      {:?}", parsing_duration);
+    println!("  Calculation:  {:?}", calculation_duration);
+    println!("  Total:        {:?}", start.elapsed());
 }
